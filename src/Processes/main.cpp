@@ -34,7 +34,7 @@ int main()
   
   while(true)
   {
-    g.procesMain();
+    g.processMain();
     
     cv::imshow(g.imageName, g.image);
     

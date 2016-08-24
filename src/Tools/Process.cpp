@@ -8,7 +8,7 @@
 
 #include "Process.h"
 
-int Process::procesMain()
+int Process::processMain()
 {
   if (!initialized) {
     init();

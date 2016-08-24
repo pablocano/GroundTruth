@@ -11,7 +11,7 @@ GroundTruthWrapper::GroundTruthWrapper(QObject *parent)
 void GroundTruthWrapper::run()
 {
   while (!shouldStop) {
-    groundTruth.procesMain();
+    groundTruth.processMain();
     sendImages();
   }
 }

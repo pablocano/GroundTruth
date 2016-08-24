@@ -10,7 +10,7 @@ public:
     Blackboard::setInstance(blackboard);
   }
   
-  int procesMain();
+  int processMain();
   
   virtual int main() = 0;
   
