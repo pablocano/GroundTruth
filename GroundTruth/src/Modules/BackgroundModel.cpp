@@ -6,9 +6,6 @@
 
 #include "BackgroundModel.h"
 #include <opencv2/imgproc/imgproc.hpp>
-#include <QtCore/QCoreApplication>
-#include <QTextStream>
-#include <QDebug>
 
 MAKE_MODULE(BackgroundModel, GroundTruth)
 
@@ -17,9 +14,9 @@ void BackgroundModel::update(MovementImage& movementImage)
     // Generar modelo de fondo al partir el programa.
     if (count < 500)
     {
-        alpha = 1;
-        std::cout << "cuenta: " <<  count << std::endl;
         count++;
+        alpha = 1/count;
+        std::cout << "cuenta: " <<  count << std::endl;
     }
     else
     {
