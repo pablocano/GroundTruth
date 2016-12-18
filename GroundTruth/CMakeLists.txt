@@ -4,7 +4,7 @@ set(CMAKE_PREFIX_PATH /home/rodrigo/openCV2.4.11)
 set(OPENCV_LIB_DIR /home/rodrigo/openCV2.4.11)
 
 PROJECT (GroundTruth)
-find_package(OpenCV 2.4.11)
+find_package(OpenCV 2.4.11 REQUIRED)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 

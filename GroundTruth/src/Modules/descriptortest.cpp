@@ -93,7 +93,7 @@ void Descriptor::update()
     cv::waitKey(0);
 }
 
-// Codigo necesario para Hough y RANSAC
+// Codigo necesario para RANSAC
 void genTransform(DMatch match, vector<KeyPoint> &keypoints1, vector<KeyPoint> &keypoints2, double &e, double &theta, double &tx, double &ty)
 {
     // Calcular transformacion de semejanza (e,theta,tx,ty) a partir de un calce "match".
@@ -146,9 +146,6 @@ int computeConsensus(vector<DMatch> &matches, vector<KeyPoint> &keypoints1, vect
             selected.push_back(i);
         }
     }
-    // Calcular el consenso asociado a la transformación (e,theta,tx,ty) dada
-    // El consenso es el conjunto de calces en "matches" que tienen un error de proyeccion menor a "umbralpos"
-    // Los indices de los calces que forman el consenso deben quedar en el arreglo "selected"
     return cons;
 }
 

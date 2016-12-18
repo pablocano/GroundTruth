@@ -9,6 +9,10 @@
 #include "Representations/Image.h"
 #include "Tools/ModuleManager/Module.h"
 #include <opencv2/core/core.hpp>
+#include <sstream>
+#include <iostream>
+
+
 
 MODULE(BackgroundModel,
 {,
@@ -35,7 +39,8 @@ public:
         alpha(0.001f),
         beta(0.8f),
         gamma(0.05f),
-        limit(0.000001f)
+        limit(0.000001f),
+        count(0)
     {}
     
     /**
@@ -80,6 +85,9 @@ private:
     
     /* Asintota de beta*/
     float limit;
+
+    /*Contador para generar background model*/
+    int count;
 };
 
 
