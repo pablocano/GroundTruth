@@ -13,6 +13,7 @@
 #include "Representations/BallPerception.h"
 #include "Modules/GroundTruthConfiguration.h"
 #include "Modules/Segmentator.h"
+#include "Modules/descriptortest.h"
 #include "Tools/Global.h"
 #include "Tools/SystemCall.h"
 #include "Tools/Comm/SPLStandardMessage.h"

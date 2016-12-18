@@ -56,6 +56,8 @@ void Controller::compile()
   addCategory("GroundTruth", 0, ":/Icons/GroundTruth.png");
   addView(new ImageView("GroundTruth.Images.EastCam", *this, "LeftCam", false, true),"GroundTruth.Images");
   addView(new ImageView("GroundTruth.Images.EastCamSegmented", *this, "RightCam", true, true),"GroundTruth.Images");
+  addView(new ImageView("GroundTruth.Images.WestCam", *this, "LeftCam", false, false),"GroundTruth.Images");
+  addView(new ImageView("GroundTruth.Images.WestCamSegmented", *this, "RightCam", true, false),"GroundTruth.Images");
   addView(new ColorCalibrationView("GroundTruth.Calibrations.ColorCalibration",*this),"GroundTruth.Calibrations");
 }
 

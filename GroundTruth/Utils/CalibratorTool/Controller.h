@@ -13,6 +13,7 @@
 #include "Visualization/DebugDrawing.h"
 #include "Representations/Image.h"
 #include "Representations/ColorModel/ColorModel.h"
+#include "Modules/descriptortest.h"
 #include "Tools/Debugging/DebugDrawings.h"
 #include "Tools/Debugging/DebugRequest.h"
 #include "Synchronization.h"

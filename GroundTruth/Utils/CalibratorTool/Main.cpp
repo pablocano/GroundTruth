@@ -3,6 +3,7 @@
 
 int main(int argc, char *argv[])
 {
+  Descriptor::update();
   QApplication app(argc, argv);
   MainWindow* w = new MainWindow(argc,argv);
   

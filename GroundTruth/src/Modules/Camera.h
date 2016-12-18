@@ -40,7 +40,9 @@ public:
   int height;
   int width;
   
-private:
   enum ANGLES { CLOCKWISE = 90, COUNTERCLOCKWISE = -90 };
-  void rotateImage90(cv::Mat &src, cv::Mat &dst, int angle);
+  void static rotateImage90(cv::Mat &src, cv::Mat &dst, int angle);
+
+private:
+
 };

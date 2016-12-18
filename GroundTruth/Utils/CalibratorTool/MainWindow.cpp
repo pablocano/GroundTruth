@@ -44,7 +44,6 @@ MainWindow::MainWindow(int argc, char *argv[])
   settings("UChile", appString)
 {
   application = this;
-  
   setWindowTitle(tr("CalibrationTool"));
   setWindowIcon(QIcon(":/Icons/GroundTruth.png"));
   setDockNestingEnabled(true);

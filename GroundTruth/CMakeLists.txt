@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.1.0)
 
+set(CMAKE_PREFIX_PATH /home/rodrigo/openCV2.4.11)
+set(OPENCV_LIB_DIR /home/rodrigo/openCV2.4.11)
+
 PROJECT (GroundTruth)
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 2.4.11)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 
@@ -9,6 +12,8 @@ set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type")
 set( MessageIDsPath ${CMAKE_CURRENT_SOURCE_DIR}/../uchile-robotics-team/Src/Tools/MessageQueue CACHE PATH "Path to MessageIDs file used by BHuman code")
 
 set( GROUNDTRUTH_SRC
+  src/Modules/descriptortest.cpp
+  src/Modules/descriptortest.h
   src/Modules/Camera.cpp
   src/Modules/Camera.h
   src/Modules/BackgroundModel.cpp
