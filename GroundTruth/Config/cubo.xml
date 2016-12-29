@@ -2,9 +2,9 @@
 <opencv_storage>
 <colorCalibration>
   <whiteThreshold>
-    <minR>107</minR>
-    <minB>75</minB>
-    <minRB>168</minRB></whiteThreshold>
+    <minR>0</minR>
+    <minB>0</minB>
+    <minRB>0</minRB></whiteThreshold>
   <ranges>
     <_>
       <hue>
@@ -28,24 +28,24 @@
         <max>0</max></intensity></_>
     <_>
       <hue>
-        <min>48</min>
-        <max>140</max></hue>
+        <min>0</min>
+        <max>0</max></hue>
       <saturation>
-        <min>49</min>
-        <max>202</max></saturation>
+        <min>0</min>
+        <max>0</max></saturation>
       <intensity>
-        <min>16</min>
-        <max>178</max></intensity></_>
+        <min>0</min>
+        <max>0</max></intensity></_>
     <_>
       <hue>
-        <min>142</min>
-        <max>190</max></hue>
+        <min>0</min>
+        <max>0</max></hue>
       <saturation>
-        <min>114</min>
-        <max>255</max></saturation>
+        <min>0</min>
+        <max>0</max></saturation>
       <intensity>
-        <min>32</min>
-        <max>106</max></intensity></_>
+        <min>0</min>
+        <max>0</max></intensity></_>
     <_>
       <hue>
         <min>0</min>

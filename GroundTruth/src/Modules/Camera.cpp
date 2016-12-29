@@ -24,8 +24,8 @@ Camera::Camera(): index(0)
      * Prepare cameras
     */
     //cv::VideoCapture::set(CV_CAP_PROP_FOURCC, "VP80");
-    //video0 = cv::VideoCapture("/home/rodrigo/Videos/Webcam/2016-05-17-155146.webm");
-    video0 = cv::VideoCapture(0);
+    //video0 = cv::VideoCapture("2016-05-17-155146.avi");
+    video0 = cv::VideoCapture(1);
     if(!video0.isOpened())  // check if we succeeded
     {
         cam1.available = false;
@@ -40,7 +40,7 @@ Camera::Camera(): index(0)
     }
     // open second camera
     video1 = cv::VideoCapture(2);
-    if(!video1.isOpened() || 1)  // check if we succeeded
+    if(!video1.isOpened())  // check if we succeeded
     {
         cam2.available = false;
         std::cout << "Camera 2 is unavailable"<< std::endl;

@@ -18,9 +18,9 @@ public:
   void update(Blobs &blobs);
   
 private:
-  struct Segment : public Regions::Line
+  struct Segment : public Regions::Rect
   {
-    Segment(const Regions::Line& line) : Regions::Line(line.left,line.right,line.depth,line.color), label(0) {}
+    Segment(const Regions::Rect& rect) : Regions::Rect(rect.center,rect.leftUpper,rect.rightBottom,rect.color), label(0) {}
     int label;
   };
   

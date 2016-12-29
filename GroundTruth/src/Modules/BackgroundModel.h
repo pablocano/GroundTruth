@@ -11,6 +11,7 @@
 #include <opencv2/core/core.hpp>
 #include <sstream>
 #include <iostream>
+#include <math.h>
 
 
 
@@ -35,12 +36,15 @@ public:
     BackgroundModel():
         model1(),
         model2(),
+        var1(),
+        var2(),
         thrld(0.13f),
         alpha(0.001f),
         beta(0.8f),
         gamma(0.05f),
         limit(0.000001f),
-        count(0)
+        count(0),
+        goal(100)
     {}
     
     /**
@@ -55,8 +59,11 @@ public:
     /* Modelo de fondo*/
     cv::Mat model1;
     cv::Mat model2;
+    cv::Mat var1;
+    cv::Mat var2;
 
     cv::Mat* currentModel;
+    cv::Mat* currentVar;
 
     cv::Mat frame;
     
@@ -88,6 +95,8 @@ private:
 
     /*Contador para generar background model*/
     int count;
+    /*Objetivo entrenamiento*/
+    int goal;
 };
 
 

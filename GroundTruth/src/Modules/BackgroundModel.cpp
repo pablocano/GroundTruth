@@ -1,4 +1,4 @@
-/** 
+/**
  * @file BackgroundModel.cpp
  * Implementacion de la clase de modelo de fondo.
  * @author Pablo Cano Montecinos.
@@ -10,17 +10,16 @@
 MAKE_MODULE(BackgroundModel, GroundTruth)
 
 void BackgroundModel::update(MovementImage& movementImage)
-{ 
-    // Generar modelo de fondo al partir el programa.
-    if (count < 500)
+{
+    if (count < goal)
     {
         count++;
         alpha = 1/count;
-        std::cout << "cuenta: " <<  count << std::endl;
+        std::cout<< "cuenta: " << count << std::endl;
     }
     else
     {
-        alpha = 0.001f;
+        alpha = 0.0001f;
     }
     if(theCameraInfo.type == CameraInfo::eastCam)
         currentModel = &model1;

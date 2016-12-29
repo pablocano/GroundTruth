@@ -26,7 +26,7 @@ void BlobProvider::update(Blobs &blobs)
 
 void BlobProvider::createBlobs()
 {
-  segments.clear();
+  /*segments.clear();
   for(auto const& segment: theRegions.regions)
     if(segment.right.x - segment.left.x > 3 && !segment.color.is(none) && !segment.color.is(green))
       segments.push_back(Segment(segment));
@@ -69,12 +69,12 @@ void BlobProvider::createBlobs()
       }
       
     }
-  }
+  }*/
 }
 
 bool BlobProvider::Group::itBelongs(const Segment &line, int segment)
 {
-  if (line.color.colors != color.colors)
+  /*if (line.color.colors != color.colors)
     return false;
   
   if(segments[segment].depth == line.depth)
@@ -85,24 +85,24 @@ bool BlobProvider::Group::itBelongs(const Segment &line, int segment)
     if(segments[segment].left.x < line.right.x && segments[segment].right.x > line.left.x)
       return true;
   
-  return false;
+  return false;*/
 }
 
 Vector2<int> BlobProvider::Group::getCenter()
 {
-  int count = 0;
+  /*int count = 0;
   Vector2<int> center;
   for(auto& segment : segments)
   {
     center += segment.getCenter();
     count++;
   }
-  return center/count;
+  return center/count;*/
 }
 
 Vector2<int> BlobProvider::Group::getLeftUpper()
 {
-  Vector2<int> leftUpper(10000,10000);
+  /*Vector2<int> leftUpper(10000,10000);
   for(auto& segment : segments)
   {
     if(segment.left.x < leftUpper.x)
@@ -110,12 +110,12 @@ Vector2<int> BlobProvider::Group::getLeftUpper()
     if(segment.left.y < leftUpper.y)
       leftUpper.y = segment.left.y;
   }
-  return leftUpper;
+  return leftUpper;*/
 }
 
 Vector2<int> BlobProvider::Group::getRightBottom()
 {
-  Vector2<int> rightBottom;
+  /*Vector2<int> rightBottom;
   for(auto& segment : segments)
   {
     if(segment.right.x > rightBottom.x)
@@ -123,5 +123,5 @@ Vector2<int> BlobProvider::Group::getRightBottom()
     if(segment.right.y > rightBottom.y)
       rightBottom.y = segment.right.y;
   }
-  return rightBottom;
+  return rightBottom;*/
 }

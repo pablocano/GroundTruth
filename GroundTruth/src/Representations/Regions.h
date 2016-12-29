@@ -10,21 +10,17 @@
 class Regions : public Streamable
 {
 public:
-  using Color = ColorModel::Colors;
-  struct Line {
-    Vector2<int> left;
-    Vector2<int> right;
-    int depth;
-    Color color;
-    Line(Vector2<int> left, Vector2<int> right,int depth, Color color) : left(left), right(right), depth(depth), color(color) {}
-    
-    Vector2<int> getCenter() const
-    {
-      return (left + right)/2.f;
-    }
+
+  struct Rect {
+    Vector2<int> center;
+    Vector2<int> leftUpper;
+    Vector2<int> rightBottom;
+    ColorModel::Colors color;
+    Rect(const Vector2<int>& center, const Vector2<int> &leftUpper, const Vector2<int>& rightBottom, const ColorModel::Colors& color) : center(center), leftUpper(leftUpper), rightBottom(rightBottom), color(color) {}
+
   };
   
   void draw() const;
   
-  std::vector<Line> regions;
+  std::vector<Rect> regions;
 };

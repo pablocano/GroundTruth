@@ -8,7 +8,7 @@ find_package(OpenCV 2.4.11 REQUIRED)
 find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 
-set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type")
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Build Type")
 set( MessageIDsPath ${CMAKE_CURRENT_SOURCE_DIR}/../uchile-robotics-team/Src/Tools/MessageQueue CACHE PATH "Path to MessageIDs file used by BHuman code")
 
 set( GROUNDTRUTH_SRC
