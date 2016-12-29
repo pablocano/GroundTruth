@@ -28,11 +28,9 @@ public:
   
   void update(Regions& regions);
   
-  void dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat theMovementImage, bool &breakLoop, int &iMin, int &jMin, int &iMax, int &jMax);
+  void dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat &filteredImage, bool &breakLoop, int &iMin, int &jMin, int &iMax, int &jMax);
   
-  void regionSearcher(cv::Mat theMovementImage, cv::Mat theImage, Regions &regions);
-
-  void convolucionBinaria(cv::Mat imageGrey, cv::Mat mask, cv::Mat &outputImage, float threshold);
+  void convolucionBinaria(const cv::Mat &imageGrey, const cv::Mat &mask, cv::Mat &outputImage, float threshold);
 
   int step;
 

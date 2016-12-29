@@ -7,12 +7,86 @@ MAKE_MODULE(Regionizer, GroundTruth)
 
 void Regionizer::update(Regions& regions)
 {
-    regionSearcher(theMovementImage, theImage, regions);
+    // Filtrar imagen
+
+    // Convolución
+    float threshold = 57;
+    cv::Mat filteredImage;
+    cv::Mat input = theMovementImage.clone();
+    input.convertTo(input, CV_32FC1);
+    convolucionBinaria(input, mask, filteredImage, threshold);
+    filteredImage.convertTo(filteredImage, CV_8UC1);
+    //imshow("Original", theMovementImage);
+    //imshow("Filtrada", filteredImage);
+
+    regions.regions.clear();
+
+    for (int i = step+1; i < theImage.rows-step; i += step)
+    {
+        int iLast = i;
+        for (int j = 2*step+1; j < theImage.cols-step; j += step)
+        {
+            float movementPixel = filteredImage.at<u_int8_t>(i,j) ? 1.f : 0.f;
+            //filteredImage.at<float>(i,j) = 255;
+            //imshow("Filtrada", filteredImage);
+            if (movementPixel == 1)
+            {
+                //std::cout << "Movimiento detectado.." << std::endl;
+                //int depth = 0;
+                ColorModel::Colors color = theColorModel.getColor(theImage.at<cv::Vec3b>(i,step));
+                int iStart = i;
+                int jStart = j;
+                int count = 0;
+                int iDir = 1;
+                int jDir = -1;
+                bool change = 1;
+                int jLast = j-step;
+                bool breakLoop = 0;
+                int iMin = 1000000, jMin = 1000000, iMax = 0, jMax = 0;
+                //std::cout << "i resta: " << std::abs(i - iStart) << "; j resta: " << std::abs(j - jStart) << std::endl;
+                //std::cout << "s x step: " << 2*step << std::endl;
+                //while (std::abs(i - iStart) < 2*step && std::abs(j - jStart) < 2*step && count < 400 || count < 10 )
+                //cv::Mat filteredImageCopy = filteredImage.clone();
+                //while ((std::abs(i-iStart) > 2*step || std::abs(j-jStart) > 2*step)  || count < 3*step )
+                while(count < 250)
+                {
+
+                    count++;
+                    dirProvider(iLast, jLast, i, j, filteredImage, breakLoop, iMin, jMin, iMax, jMax);
+                    if (breakLoop)
+                    {
+                        break;
+                    }
+                    //cv::imshow("Movement", filteredImageCopy);
+
+                }
+                // Eliminar de la imagen lo ya detectado
+                cv::Point ptSup;
+                ptSup.x = jMin;
+                ptSup.y = iMin;
+                cv::Point ptInf;
+                ptSup.x = jMax;
+                ptSup.y = iMax;
+                cv::rectangle(filteredImage, ptSup, ptInf, cv::Scalar(0), -1);
+                //cv::imshow("Rectangle", filteredImage);
+                // Volver a partir desde donde se estaba
+                i = iStart;
+                j = jStart;
+                // Actualizar las regiones
+                Vector2<int> leftUpper(jMin,iMin);
+                Vector2<int> rightBottom(jMax,iMax);
+                Vector2<int> center((jMax-jMin)/2,(iMax-iMin)/2);
+                regions.regions.push_back(Regions::Rect(center,leftUpper,rightBottom,color));
+                //std::cout << "Región recorrida." << std::endl;
+                break;
+            }
+
+        }
+    }
 }
 
-void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat theMovementImage, bool &breakLoop, int &iMin, int &jMin, int &iMax, int &jMax)
+void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat &filteredImage, bool &breakLoop, int &iMin, int &jMin, int &iMax, int &jMax)
 {
-    theMovementImage.convertTo(theMovementImage, CV_8UC1);
     int iDir = i - iLast;
     int jDir = j - jLast;
     int changeDir;
@@ -20,7 +94,7 @@ void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat the
     bool change;
     //std::cout << "A vers...: " << (theMovementImage.at<u_int8_t>(i,j) ? 1.f : 0.f)  << std::endl;
     //std::cout << theMovementImage << std::endl;
-    if (theMovementImage.at<u_int8_t>(i,j) == 255)
+    if (filteredImage.at<u_int8_t>(i,j) == 255)
     {
         //std::cout << "Buena" << std::endl;
         if (i != 0 || j!= 0)
@@ -29,7 +103,7 @@ void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat the
             //std::cout << "jDir: " << jDir << std::endl;
             if (iDir == 0 && jDir == step)
             {
-                change = (theMovementImage.at<u_int8_t>(i,j) != theMovementImage.at<u_int8_t>(i-step,j));
+                change = (filteredImage.at<u_int8_t>(i,j) != filteredImage.at<u_int8_t>(i-step,j));
                 iNewChange = i;
                 jNewChange = j+step;
                 iNewNoChange = i-step;
@@ -37,7 +111,7 @@ void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat the
             }
             else if (iDir == -step && jDir == 0)
             {
-                change = (theMovementImage.at<u_int8_t>(i,j) != theMovementImage.at<u_int8_t>(i,j-step));
+                change = (filteredImage.at<u_int8_t>(i,j) != filteredImage.at<u_int8_t>(i,j-step));
                 iNewChange = i-step;
                 jNewChange = j;
                 iNewNoChange = i;
@@ -45,7 +119,7 @@ void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat the
             }
             else if (iDir == 0 && jDir == -step)
             {
-                change = (theMovementImage.at<u_int8_t>(i,j) != theMovementImage.at<u_int8_t>(i+step,j));
+                change = (filteredImage.at<u_int8_t>(i,j) != filteredImage.at<u_int8_t>(i+step,j));
                 iNewChange = i;
                 jNewChange = j-step;
                 iNewNoChange = i+step;
@@ -53,7 +127,7 @@ void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat the
             }
             else if (iDir == step && jDir == 0)
             {
-                change = (theMovementImage.at<u_int8_t>(i,j) != theMovementImage.at<u_int8_t>(i,j+step));
+                change = (filteredImage.at<u_int8_t>(i,j) != filteredImage.at<u_int8_t>(i,j+step));
                 iNewChange = i+step;
                 jNewChange = j;
                 iNewNoChange = i;
@@ -111,7 +185,7 @@ void Regionizer::dirProvider(int &iLast, int &jLast, int &i, int &j, cv::Mat the
     //std::cout << "iMin: " << iMin << std::endl;
 }
 
-void Regionizer::convolucionBinaria(cv::Mat imageGrey, cv::Mat mask, cv::Mat &outputImage, float threshold)
+void Regionizer::convolucionBinaria(const cv::Mat &imageGrey, const cv::Mat &mask, cv::Mat &outputImage, float threshold)
 {
     int rows = imageGrey.rows;
     int cols = imageGrey.cols;
@@ -159,90 +233,4 @@ void Regionizer::convolucionBinaria(cv::Mat imageGrey, cv::Mat mask, cv::Mat &ou
     outputImage = outputImage.rowRange(kCenterY, rows - kCenterY);
 }
 
-void Regionizer::regionSearcher(cv::Mat theMovementImage, cv::Mat theImage, Regions &regions)
-{
-    // Filtrar imagen
 
-    // Convolución
-    float threshold = 57;
-    cv::Mat filteredImage;
-    cv::Mat input = theMovementImage.clone();
-    input.convertTo(input, CV_32FC1);
-    convolucionBinaria(input, mask, filteredImage, threshold);
-    //imshow("Original", theMovementImage);
-    //imshow("Filtrada", filteredImage);
-
-    regions.regions.clear();
-
-    for (int i = step+1; i < theImage.rows-step; i += step)
-    {
-        int iLast = i;
-        for (int j = 2*step+1; j < theImage.cols-step; j += step)
-        {
-            float movementPixel = filteredImage.at<float>(i,j) ? 1.f : 0.f;
-            //filteredImage.at<float>(i,j) = 255;
-            //imshow("Filtrada", filteredImage);
-            if (movementPixel == 1)
-            {
-                //std::cout << "Movimiento detectado.." << std::endl;
-                //int depth = 0;
-                ColorModel::Colors color = theColorModel.getColor(theImage.at<cv::Vec3b>(i,step));
-                int iStart = i;
-                int jStart = j;
-                int count = 0;
-                int iDir = 1;
-                int jDir = -1;
-                bool change = 1;
-                int jLast = j-step;
-                bool breakLoop = 0;
-                int iMin = 1000000, jMin = 1000000, iMax = 0, jMax = 0;
-                //std::cout << "i resta: " << std::abs(i - iStart) << "; j resta: " << std::abs(j - jStart) << std::endl;
-                //std::cout << "s x step: " << 2*step << std::endl;
-                //while (std::abs(i - iStart) < 2*step && std::abs(j - jStart) < 2*step && count < 400 || count < 10 )
-                cv::Mat filteredImageCopy = filteredImage.clone();
-                while ((std::abs(i-iStart) > 2*step || std::abs(j-jStart) > 2*step)  || count < 3*step )
-                {
-                    //std::cout << std::abs(i-iStart) << std::endl;
-                    //std::cout << std::abs(j-jStart) << std::endl;
-                    count++;
-                    //std::cout << "count: " << count << std::endl;
-                    dirProvider(iLast, jLast, i, j, filteredImage, breakLoop, iMin, jMin, iMax, jMax);
-                    /*cv::Point pt;
-                    pt.x = j;
-                    pt.y = i;*/
-                    //cv::Point pt2;
-                    //pt2.x = i+3;
-                    //pt2.y = j+3;
-                    //cv::circle(filteredImageCopy, pt, 3, cv::Scalar( 255, 0, 0 ), 1);
-                    //cv::circle(regionViewer, pt2, 3, cv::Scalar( 255, 0, 0 ), 1);
-                    if (breakLoop)
-                    {
-                        break;
-                    }
-                    //cv::imshow("Movement", filteredImageCopy);
-
-                }
-                // Eliminar de la imagen lo ya detectado
-                cv::Point ptSup;
-                ptSup.x = jMin;
-                ptSup.y = iMin;
-                cv::Point ptInf;
-                ptSup.x = jMax;
-                ptSup.y = iMax;
-                cv::rectangle(filteredImage, ptSup, ptInf, cv::Scalar(0), -1);
-                //cv::imshow("Rectangle", filteredImage);
-                // Volver a partir desde donde se estaba
-                i = iStart;
-                j = jStart;
-                // Actualizar las regiones
-                Vector2<int> leftUpper(jMin,iMin);
-                Vector2<int> rightBottom(jMax,iMax);
-                Vector2<int> center((jMax-jMin)/2,(iMax-iMin)/2);
-                regions.regions.push_back(Regions::Rect(center,leftUpper,rightBottom,color));
-                //std::cout << "Región recorrida." << std::endl;
-                break;
-            }
-
-        }
-    }
-}
