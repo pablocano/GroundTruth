@@ -6,8 +6,10 @@
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/nonfree/features2d.hpp"
 #include "opencv2/nonfree/nonfree.hpp"
+#include <math.h>
 using namespace cv;
 using namespace std;
+#define PI 3.14159265
 
 void genTransform(cv::DMatch match, std::vector<cv::KeyPoint> &keypoints1, std::vector<cv::KeyPoint> &keypoints2, double &e, double &theta, double &tx, double &ty);
 
@@ -17,14 +19,55 @@ bool ransac(vector<DMatch> &matches, vector<KeyPoint> &keypoints1, vector<KeyPoi
 
 void Descriptor::update()
 {
-    //std::cout << "Prueba descriptor" << std::endl;
-    cv::Mat image = cv::imread("/home/rodrigo/Videos/NAOs/captura10.jpg", CV_LOAD_IMAGE_GRAYSCALE);   // Read the file
-    cv::Mat imageComp = cv::imread("/home/rodrigo/Videos/NAOs/captura54.jpg", CV_LOAD_IMAGE_GRAYSCALE);   // Read the file
 
+    //std::cout << "Prueba descriptor" << std::endl;
+   // cv::Mat image = cv::imread("/home/rodrigo/Videos/NAOs/captura10.jpg", CV_LOAD_IMAGE_GRAYSCALE);   // Read the file
+    //cv::Mat imageComp = cv::imread("/home/rodrigo/Videos/NAOs/captura54.jpg", CV_LOAD_IMAGE_GRAYSCALE);   // Read the file
+    //cv::Mat image = cv::imread("binaryTest.png", CV_LOAD_IMAGE_GRAYSCALE);
+    cv::Mat image = cv::imread("binaryTest2.png", CV_LOAD_IMAGE_GRAYSCALE);
+
+
+    cv::Moments Momentos = cv::moments(image, 1);
+    //std::cout << Momentos.mu20 << std::endl;
+
+    // Calcular orientación
+    float mu20 = Momentos.mu20;
+    float mu00 = Momentos.m00;
+    float mu02 = Momentos.mu02;
+    float mu11 = Momentos.mu11;
+    float muP20 = mu20/mu00;
+    float muP02 = mu02/mu00;
+    float muP11 = mu11/mu00;
+
+    //std::cout << muP20 << std::endl;
+
+    float anguloOrient = 0.5*atan2((2*muP11),(muP20-muP02));
+    //float anguloOrient = 0.5*atan2((muP20-muP02),(2*muP11));
+    //float anguloOrient = 0.5*atan((2*muP11)/(muP20-muP02));
+    std::cout << "Orientación Imagen: " << anguloOrient*180/PI << std::endl;
+
+    // Calcular centros de masa
+
+    float centroX = Momentos.m10/Momentos.m00;
+    float centroY = Momentos.m01/Momentos.m00;
+
+    cv::Point pt1;
+    cv::Point pt2;
+    pt1.x = centroX;
+    pt1.y = centroY;
+    pt2.x = centroX+100*cos(anguloOrient);
+    pt2.y = centroY+100*sin(anguloOrient);
+
+   // Dibujar orientación
+
+    cv::line(image, pt1, pt2, Scalar( 110, 220, 0 ));
+
+    cv::imshow("Imagen Prueba Binaria", image);
 
     /**
      * Prepare Camera Info
      * */
+    /*
     cv::Mat K, d;
     cv::Point fieldCenter;
     float pix2World;
@@ -70,7 +113,7 @@ void Descriptor::update()
     double e=1, theta=0, tx=0, ty=0;
     DMatch match = matches[0];
     vector<DMatch> acceptedRansac;
-    ransac(matches, keypoints1, keypoints2, acceptedRansac, e, theta, tx, ty);
+    ransac(matches, keypoints1, keypoints2, acceptedRansac, e, theta, tx, ty);*/
 
     // Draw Images
     /*cv::drawKeypoints(image, keypoints1, output);
@@ -84,11 +127,13 @@ void Descriptor::update()
     cv::drawMatches(imageComp, keypoints2, image, keypoints1, matches, img_matches);
     cv::imshow("matches", img_matches);*/
 
-    cv::namedWindow("acceptedRansac", cv::WINDOW_NORMAL);
+    /*cv::namedWindow("acceptedRansac", cv::WINDOW_NORMAL);
     Mat img_matches;
     drawMatches(imageComp, keypoints2, image, keypoints1, acceptedRansac, img_matches);
     imshow("acceptedRansac", img_matches);
-    imwrite("acceptedRansac.jpg", img_matches);
+    imwrite("acceptedRansac.jpg", img_matches);*/
+
+
 
     cv::waitKey(0);
 }

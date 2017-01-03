@@ -2,14 +2,19 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core/core.hpp>
 #include <ostream>
+#include "Tools/Debugging/DebugDrawings.h"
 
-void RobotPercept::draw(cv::Mat &image) const
+
+void RobotPercept::draw() const
 {
+    DECLARE_DEBUG_DRAWING("representation:RobotPercept", "drawingOnImage");
     int fontFace = cv::FONT_HERSHEY_SCRIPT_SIMPLEX;
     double fontScale = 0.3f;
     int thickness = 0.5;
     for(auto& robot : robots)
     {
+        cv::Scalar color = DrawingColors::getDrawingColor(robot.color.colors);
+        RECTANGLE("representation:RobotPercept", robot.leftUpper.x, robot.leftUpper.y, robot.rightBottom.x, robot.rightBottom.y, 5, Drawings::ps_solid, ColorRGBA(color[0],color[0],color[3]));
         std::stringstream textStream;
         textStream << robot.center.x <<  ", " << robot.center.y;
         std::string text = textStream.str();
@@ -19,11 +24,12 @@ void RobotPercept::draw(cv::Mat &image) const
         baseline += thickness;
 
         // center the text
-        cv::Point textOrg(robot.centerInImage.x - textSize.width/2,
+        /*cv::Point textOrg(robot.centerInImage.x - textSize.width/2,
                       robot.centerInImage.y + textSize.height/2);
 
         cv::putText(image, text, textOrg, fontFace, fontScale,
                 cv::Scalar::all(0), thickness, 8);
         cv::rectangle(image,cv::Point2i(robot.leftUpper.x, robot.leftUpper.y),cv::Point2i(robot.rightBottom.x, robot.rightBottom.y), cv::Scalar(255,0,0));
-    }
+        */
+   }
 }

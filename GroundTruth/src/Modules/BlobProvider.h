@@ -8,14 +8,15 @@
 MODULE(BlobProvider,
 {,
   REQUIRES(CameraInfo),
-  REQUIRES(Regions),
-  PROVIDES(Blobs),
+  //REQUIRES(Regions),
+  //PROVIDES(Blobs),
 });
 
 class BlobProvider : public BlobProviderBase {
   
 public:
   void update(Blobs &blobs);
+
   
 private:
   struct Segment : public Regions::Rect

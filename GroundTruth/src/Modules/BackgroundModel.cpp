@@ -19,7 +19,7 @@ void BackgroundModel::update(MovementImage& movementImage)
     }
     else
     {
-        alpha = 0.0001f;
+        alpha = 0.0005f;
     }
     if(theCameraInfo.type == CameraInfo::eastCam)
         currentModel = &model1;

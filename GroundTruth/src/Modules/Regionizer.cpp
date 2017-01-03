@@ -43,10 +43,6 @@ void Regionizer::update(Regions& regions)
                 int jLast = j-step;
                 bool breakLoop = 0;
                 int iMin = 1000000, jMin = 1000000, iMax = 0, jMax = 0;
-                //std::cout << "i resta: " << std::abs(i - iStart) << "; j resta: " << std::abs(j - jStart) << std::endl;
-                //std::cout << "s x step: " << 2*step << std::endl;
-                //while (std::abs(i - iStart) < 2*step && std::abs(j - jStart) < 2*step && count < 400 || count < 10 )
-                //cv::Mat filteredImageCopy = filteredImage.clone();
                 //while ((std::abs(i-iStart) > 2*step || std::abs(j-jStart) > 2*step)  || count < 3*step )
                 while(count < 250)
                 {
@@ -57,7 +53,6 @@ void Regionizer::update(Regions& regions)
                     {
                         break;
                     }
-                    //cv::imshow("Movement", filteredImageCopy);
 
                 }
                 // Eliminar de la imagen lo ya detectado
@@ -77,7 +72,6 @@ void Regionizer::update(Regions& regions)
                 Vector2<int> rightBottom(jMax,iMax);
                 Vector2<int> center((jMax-jMin)/2,(iMax-iMin)/2);
                 regions.regions.push_back(Regions::Rect(center,leftUpper,rightBottom,color));
-                //std::cout << "Región recorrida." << std::endl;
                 break;
             }
 

@@ -7,12 +7,22 @@
 #include "Representations/RobotPercept.h"
 #include "Representations/RobotPose.h"
 #include "Tools/ModuleManager/Module.h"
+#include "Representations/ColorModel/ColorModel.h"
+#include "Representations/Image.h"
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <sstream>
+#include <iostream>
+#define PI 3.14159265
+
 
 MODULE(RobotPoseProvider,
 {,
   REQUIRES(CameraInfo),
   REQUIRES(Blobs),
+  REQUIRES(Image),
   REQUIRES(RobotsIdentifiers),
+  REQUIRES(ColorModel),
   REQUIRES(RobotPercept),
   PROVIDES(RobotsPoses),
 });
@@ -42,6 +52,8 @@ public:
 private:
   
   void analizeBlob(const RobotPercept::Robot& robot);
+
+  void getPicDir(cv::Mat &image, int &centerX, int &centerY, float &anguloOrient);
 
   void analizePosibleRobot();
   

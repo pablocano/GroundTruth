@@ -2,6 +2,7 @@
 #include "Representations/Image.h"
 #include "Tools/Math/Vector2.h"
 #include "Tools/Streamable.h"
+#include "Representations/ColorModel/ColorModel.h"
 
 class RobotPercept : public Streamable
 {
@@ -14,9 +15,10 @@ public:
         Vector2<int> leftUpper;
         Vector2<int> rightBottom;
         Vector2<int> center;
+        ColorModel::Colors color;
     };
 
-    void draw(cv::Mat& image) const;
+    void draw() const;
 
     std::vector<Robot> robots;
 };
