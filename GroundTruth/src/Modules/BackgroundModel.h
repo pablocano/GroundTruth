@@ -44,7 +44,7 @@ public:
         gamma(0.05f),
         limit(0.000001f),
         count(0),
-        goal(300)
+        goal(200)
     {}
     
     /**

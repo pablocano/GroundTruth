@@ -38,14 +38,14 @@
         <max>0</max></intensity></_>
     <_>
       <hue>
-        <min>126</min>
-        <max>217</max></hue>
+        <min>134</min>
+        <max>231</max></hue>
       <saturation>
-        <min>77</min>
-        <max>246</max></saturation>
+        <min>65</min>
+        <max>215</max></saturation>
       <intensity>
-        <min>169</min>
-        <max>228</max></intensity></_>
+        <min>164</min>
+        <max>241</max></intensity></_>
     <_>
       <hue>
         <min>0</min>
@@ -58,14 +58,14 @@
         <max>0</max></intensity></_>
     <_>
       <hue>
-        <min>204</min>
-        <max>111</max></hue>
+        <min>246</min>
+        <max>42</max></hue>
       <saturation>
-        <min>50</min>
-        <max>255</max></saturation>
+        <min>29</min>
+        <max>163</max></saturation>
       <intensity>
-        <min>164</min>
-        <max>255</max></intensity></_>
+        <min>194</min>
+        <max>250</max></intensity></_>
     <_>
       <hue>
         <min>0</min>

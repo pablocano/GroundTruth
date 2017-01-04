@@ -31,7 +31,7 @@ class RobotPoseProvider : public RobotPoseProviderBase {
   
 public:
   
-  RobotPoseProvider() : minDistance(10) {}
+  RobotPoseProvider() : minDistance(10), updatePose1(0), updatePose2(0), cameraSwitch(1), pond(5), pt1X1(0), pt1Y1(0), pt2X1(0), pt2Y1(0), pt1X2(0), pt1Y2(0), pt2X2(0), pt2Y2(0) {}
   
   void update(RobotsPoses& robotPose);
   
@@ -60,6 +60,30 @@ private:
   void calculatePose(RobotsPoses& robotPose);
   
   int minDistance;
+
+  int updatePose1;
+
+  int updatePose2;
+
+  int pond;
+
+  int cameraSwitch;
+
+  int pt1X1;
+
+  int pt1Y1;
+
+  int pt2X1;
+
+  int pt2Y1;
+
+  int pt1X2;
+
+  int pt1Y2;
+
+  int pt2X2;
+
+  int pt2Y2;
   
   PosibleRobot posibleRobot;
 };

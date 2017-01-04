@@ -28,7 +28,7 @@ void RobotPerceptor::update(RobotPercept& robotPercept)
                 }
             }
         }
-        if (orangeCount > 40 && blueCount > 40)
+        if (orangeCount > 30 && blueCount > 30)
         {
             Vector2<int> pos = Transformation::imageToImageCorrected(region.center,theCameraInfo);
             robotPercept.robots.push_back(RobotPercept::Robot(region.center,region.leftUpper,region.rightBottom,pos));
