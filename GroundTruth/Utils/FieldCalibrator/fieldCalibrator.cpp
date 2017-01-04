@@ -430,12 +430,12 @@ void computeCalibrationAndSave()
 
     fs1 << "Camera_Matrix" << K1;
     fs1 << "Distortion_Coefficients" << d1;
-    //fs1 << "Pixel_to_World" << pix2World1;
+    fs1 << "Pixel_to_World" << transform1;
     fs1 << "Field_Center" << fieldCenter1;
 
     fs2 << "Camera_Matrix" << K2;
     fs2 << "Distortion_Coefficients" << d2;
-    //fs2 << "Pixel_to_World" << pix2World2;
+    fs2 << "Pixel_to_World" << transform2;
     fs2 << "Field_Center" << fieldCenter2;
 }
 
