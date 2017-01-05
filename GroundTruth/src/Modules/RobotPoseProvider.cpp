@@ -52,16 +52,17 @@ void RobotPoseProvider::update(RobotsPoses &robotsPoses)
 
 
 
-      cv::Mat puntosIm = theImage.clone();
-      // Calcurar sentido robot
-      int distBlue = 100000;
-      int distOrange = 100000;
-      int lastBlueX = 0;
-      int lastBlueY = 0;
-      int lastOrangeX = 0;
-      int lastOrangeY = 0;
-      std::vector<cv::Point> pointsRegresionOrange;
-      std::vector<cv::Point> pointsRegresionBlue;
+      //cv::Mat puntosIm = theImage.clone();
+
+      // Calcurar sentido robot recorriendo en x
+      int distBlueHor = 100000;
+      int distOrangeHor = 100000;
+      int lastBlueXHor = 0;
+      int lastBlueYHor = 0;
+      int lastOrangeXHor = 0;
+      int lastOrangeYHor = 0;
+      std::vector<cv::Point> pointsRegresionOrangeHor;
+      std::vector<cv::Point> pointsRegresionBlueHor;
       std::cout << "1" << std::endl;
       for(int i = robot.leftUpper.y; i < robot.rightBottom.y; i++)
       {
@@ -69,18 +70,18 @@ void RobotPoseProvider::update(RobotsPoses &robotsPoses)
           {
               if (theColorModel.getColor(theImage.at<cv::Vec3b>(i,j)).is(blue))
               {
-                  distBlue = 0;
-                  lastBlueX = j;
-                  lastBlueY = i;
-                  std::cout << "distOrange: " << distOrange << std::endl;
-                  if (distOrange < 10)
+                  distBlueHor = 0;
+                  lastBlueXHor = j;
+                  lastBlueYHor = i;
+                  std::cout << "distOrangeHor: " << distOrangeHor << std::endl;
+                  if (distOrangeHor < 10)
                   {
-                      pointsRegresionBlue.push_back(cv::Point((lastOrangeX + j)/2, (lastOrangeY + i)/2));
-                      std::cout << (lastOrangeX + j)/2 << std::endl;
-                      std::cout << (lastOrangeY + i)/2 << std::endl;
+                      pointsRegresionBlueHor.push_back(cv::Point((lastOrangeXHor + j)/2, (lastOrangeYHor + i)/2));
+                      std::cout << (lastOrangeXHor + j)/2 << std::endl;
+                      std::cout << (lastOrangeYHor + i)/2 << std::endl;
                       //circle(puntosIm, cv::Point((lastOrangeX + j)/2, (lastOrangeY + i)/2), 2, cv::Scalar( 110, 220, 0 ));
                       //imshow("plx", puntosIm);
-                      distOrange = 10000;
+                      distOrangeHor = 10000;
                   }
                   //std::cout << "2" << std::endl;
 
@@ -88,41 +89,143 @@ void RobotPoseProvider::update(RobotsPoses &robotsPoses)
 
               if (theColorModel.getColor(theImage.at<cv::Vec3b>(i,j)).is(orange))
               {
-                  distOrange = 0;
-                  lastOrangeX = j;
-                  lastOrangeY = i;
-                  std::cout << "distBlue: " << distBlue << std::endl;
-                  if (distBlue < 10)
+                  distOrangeHor = 0;
+                  lastOrangeXHor = j;
+                  lastOrangeYHor = i;
+                  std::cout << "distBlueHor: " << distBlueHor << std::endl;
+                  if (distBlueHor < 10)
                   {
-                      pointsRegresionOrange.push_back(cv::Point((lastBlueX + j)/2, (lastBlueY + i)/2));
-                      std::cout << (lastBlueX + j)/2 << std::endl;
-                      std::cout << (lastBlueY + i)/2 << std::endl;
-                      distBlue = 10000;
+                      pointsRegresionOrangeHor.push_back(cv::Point((lastBlueXHor + j)/2, (lastBlueYHor + i)/2));
+                      std::cout << (lastBlueXHor + j)/2 << std::endl;
+                      std::cout << (lastBlueYHor + i)/2 << std::endl;
+                      distBlueHor = 10000;
                   }
                   //std::cout << "3" << std::endl;
               }
-              distBlue++;
-              distOrange++;
+              distBlueHor++;
+              distOrangeHor++;
           }
       }
+
+      // Calcular sentido del robot recorriendo en y
+
+      int distBlueVer = 100000;
+      int distOrangeVer = 100000;
+      int lastBlueXVer = 0;
+      int lastBlueYVer = 0;
+      int lastOrangeXVer = 0;
+      int lastOrangeYVer = 0;
+      std::vector<cv::Point> pointsRegresionOrangeVer;
+      std::vector<cv::Point> pointsRegresionBlueVer;
+      std::cout << "1" << std::endl;
+      for (int j = robot.leftUpper.x; j < robot.rightBottom.x; j++)
+      {
+          for(int i = robot.leftUpper.y; i < robot.rightBottom.y; i++)
+          {
+              if (theColorModel.getColor(theImage.at<cv::Vec3b>(i,j)).is(blue))
+              {
+                  distBlueVer = 0;
+                  lastBlueXVer = j;
+                  lastBlueYVer = i;
+                  std::cout << "distOrangeVer: " << distOrangeVer << std::endl;
+                  if (distOrangeVer < 10)
+                  {
+                      pointsRegresionBlueVer.push_back(cv::Point((lastOrangeXVer + j)/2, (lastOrangeYVer + i)/2));
+                      std::cout << (lastOrangeXVer + j)/2 << std::endl;
+                      std::cout << (lastOrangeYVer + i)/2 << std::endl;
+                      //circle(puntosIm, cv::Point((lastOrangeX + j)/2, (lastOrangeY + i)/2), 2, cv::Scalar( 110, 220, 0 ));
+                      //imshow("plx", puntosIm);
+                      distOrangeVer = 10000;
+                  }
+                  //std::cout << "2" << std::endl;
+
+              }
+
+              if (theColorModel.getColor(theImage.at<cv::Vec3b>(i,j)).is(orange))
+              {
+                  distOrangeVer = 0;
+                  lastOrangeXVer = j;
+                  lastOrangeYVer = i;
+                  std::cout << "distBlueVer: " << distBlueVer << std::endl;
+                  if (distBlueVer < 10)
+                  {
+                      pointsRegresionOrangeVer.push_back(cv::Point((lastBlueXVer + j)/2, (lastBlueYVer + i)/2));
+                      std::cout << (lastBlueXVer + j)/2 << std::endl;
+                      std::cout << (lastBlueYVer + i)/2 << std::endl;
+                      distBlueVer = 10000;
+                  }
+                  //std::cout << "3" << std::endl;
+              }
+              distBlueVer++;
+              distOrangeVer++;
+          }
+      }
+
+
       // Ver cuál vector gana
       cv::Vec4f puntosLinea;
       cv::Point pt1;
       cv::Point pt2;
-      if(pointsRegresionBlue.size() > 3 || pointsRegresionOrange.size() > 3)
+      if(pointsRegresionBlueHor.size() > 3 || pointsRegresionOrangeHor.size() > 3 || pointsRegresionBlueVer.size() > 3 || pointsRegresionOrangeVer.size() > 3)
       {
-          if (pointsRegresionBlue.size() > pointsRegresionOrange.size())
+          if (pointsRegresionBlueHor.size() > pointsRegresionOrangeHor.size())
           {
-              std::cout << "4" << std::endl;
-              // Blue a la derecha
-              cv::fitLine(pointsRegresionBlue, puntosLinea, CV_DIST_L2, 0, 0.01, 0.01);
+              if (pointsRegresionBlueHor.size() > pointsRegresionBlueVer.size())
+              {
+                 if (pointsRegresionBlueHor.size() > pointsRegresionOrangeVer.size())
+                 {
+                     std::cout << "8" << std::endl;
+                     // Blue a la derecha
+                     cv::fitLine(pointsRegresionBlueHor, puntosLinea, CV_DIST_L2, 0, 0.01, 0.01);
+                 }
+              }
           }
+
+          if (pointsRegresionOrangeHor.size() > pointsRegresionBlueHor.size())
+          {
+              if (pointsRegresionOrangeHor.size() > pointsRegresionBlueVer.size())
+              {
+                 if (pointsRegresionOrangeHor.size() > pointsRegresionOrangeVer.size())
+                 {
+                     std::cout << "9" << std::endl;
+                     // Blue a la derecha
+                     cv::fitLine(pointsRegresionOrangeHor, puntosLinea, CV_DIST_L2, 0, 0.01, 0.01);
+                 }
+              }
+          }
+
+          if (pointsRegresionBlueVer.size() > pointsRegresionOrangeHor.size())
+          {
+              if (pointsRegresionBlueVer.size() > pointsRegresionBlueHor.size())
+              {
+                 if (pointsRegresionBlueVer.size() > pointsRegresionOrangeVer.size())
+                 {
+                     std::cout << "10" << std::endl;
+                     // Blue a la derecha
+                     cv::fitLine(pointsRegresionBlueVer, puntosLinea, CV_DIST_L2, 0, 0.01, 0.01);
+                 }
+              }
+          }
+
+          if (pointsRegresionOrangeVer.size() > pointsRegresionBlueHor.size())
+          {
+              if (pointsRegresionOrangeVer.size() > pointsRegresionBlueVer.size())
+              {
+                 if (pointsRegresionOrangeVer.size() > pointsRegresionOrangeHor.size())
+                 {
+                     std::cout << "11" << std::endl;
+                     // Blue a la derecha
+                     cv::fitLine(pointsRegresionOrangeVer, puntosLinea, CV_DIST_L2, 0, 0.01, 0.01);
+                 }
+              }
+          }
+          /*
           else
           {
               std::cout << "5" << std::endl;
               // Orange a la derecha
-              cv::fitLine(pointsRegresionOrange, puntosLinea, CV_DIST_L2, 0, 0.01, 0.01);
-          }
+              cv::fitLine(pointsRegresionOrangeHor, puntosLinea, CV_DIST_L2, 0, 0.01, 0.01);
+          }*/
           // Revisar Linea
 
          /* int centerBlueX, centerBlueY;
